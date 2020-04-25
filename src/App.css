@@ -1,0 +1,135 @@
+
+/* Reset Styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+body {
+  background: #fff;
+  font-family: Arial, Helvetica Neue, sans-serif;
+}
+
+
+/* Header Section */
+header {
+  margin: 0;
+  background: #1E2432;
+  /*background: #6885ac;*/
+  padding: 10px 20px;
+  color: #fff;
+}
+
+#icon {
+  width: 10%;
+  display: inline-block;
+  vertical-align: unset;
+  padding-top: 8px;
+}
+
+#icon img {
+
+  width: 100px;
+  border-radius: 10px;
+}
+
+.headerTitle {
+  width: 60%;
+  vertical-align: top;
+  padding-top: 5px;
+  padding-left: 20px;
+  display: inline-block;
+
+}
+
+.header h1 {
+  font-family: "Old English Text MT", agGridBalham, serif;
+  font-size: 3.5em;
+  margin-bottom: 0;
+}
+
+.header h2 {
+  font-size: 1.3em;
+  font-family: serif;
+}
+
+.navComponent {
+  width: 30%;
+  padding-top: 30px;
+  vertical-align: top;
+  display: inline-block;
+  text-align: right;
+  font-size: 1.25em;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 15px 25px;
+  border-radius: 3px;
+  transition: 0.3s ease all;
+}
+
+nav ul li a:hover {
+  background: #fff;
+  text-decoration: none;
+  color: #1E2432;
+}
+
+/* Basic Site Section */
+.homePage {
+  background: #1E2432;
+  color: #fff;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding-top: 40px;
+  width: 70%;
+  text-align: center;
+  font-family: agGridClassic, serif;
+}
+
+.greeting h3 {
+  font-size: 1.75em;
+}
+
+.greeting p {
+  font-size: 1.2em;
+}
+
+
+
+
+.gridContainer {
+  text-align: start;
+  display: grid;
+  justify-content: center;
+}
+
+
+/* Footer Section */
+footer {
+  background: #1E2432;
+  padding: 50px;
+  text-align: center;
+  color: #fff;
+}

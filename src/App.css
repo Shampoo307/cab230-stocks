@@ -102,7 +102,7 @@ nav ul li a:hover {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 30px;
   width: 70%;
   text-align: center;
   font-family: agGridClassic, serif;
@@ -116,6 +116,44 @@ nav ul li a:hover {
   font-size: 1.2em;
 }
 
+.search-bar-container {
+  width: 600px;
+}
+
+#industrySearch {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 0px;
+  background: #1e2432;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  color: #fff;
+  /*box-shadow: 5px 5px white;*/
+}
+
+#industry-search-button {
+  display: inline-block;
+  margin: 0;
+  padding: 0px;
+  /*background: #fff;*/
+  /*color: #1E2432;*/
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
+}
+
+#industry-select {
+  display: inline-block;
+  width: 240px;
+  margin-left: 150px;
+  /*padding-left: 4px;*/
+  /*padding-top: 4px;*/
+  /*padding-bottom: 4px;*/
+  /*margin-left: 160px;*/
+}
+
 
 
 
@@ -123,6 +161,7 @@ nav ul li a:hover {
   text-align: start;
   display: grid;
   justify-content: center;
+
 }
 
 

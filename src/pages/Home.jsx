@@ -1,44 +1,163 @@
-import  React from 'react';
+import  React, { useState, useEffect } from 'react';
 import {AgGridReact} from "ag-grid-react";
+import { Form, FormGroup, Label, Input } from 'reactstrap';
 
 
-const mockData = {
-    columns: [
-        { headerName: "Name", field: "name", sortable: true },
-        { headerName: "Symbol", field: "symbol", sortable: true },
-        { headerName: "Industry", field: "industry", sortable: true }
-    ],
-    rowData: [
-        { name: "Arconic Inc", symbol: "ARNC", industry: "Industrials" },
-        { name: "Apple Inc", symbol: "AAPL", industry: "Information Technology" },
-        { name: "Berkshire Hathaway", symbol: "BRK.B", industry: "Financials" },
-        { name: "Boeing Company", symbol: "BA", industry: "Industrials" },
-        { name: "CA Inc", symbol: "CA", industry: "Information Technology" },
-        { name: "Dominion Energy", symbol: "D", industry: "Utilities" },
-        { name: "Exelon Corp.", symbol: "EXC", industry: "Utilities" },
-        { name: "Expedia Inc", symbol: "EXPE", industry: "Consumer Discretionary" },
-        { name: "Goldman Sachs Group", symbol: "GS", industry: "Financials" },
-        { name: "Kroger Co.", symbol: "KR", industry: "Consumer Staples" },
-        { name: "Nucor Corp.", symbol: "NUE", industry: "Materials" },
-        { name: "Pfizer Inc.", symbol: "PFE", industry: "Health Care" },
-        { name: "PPG Industries", symbol: "PPG", industry: "Materials" },
-        { name: "Salesforece.com", symbol: "CRM", industry: "Information Technology" },
-        { name: "Stryker Corp.", symbol: "SYK", industry: "Health Care" }
-    ]
+function validateInput(input) {
+    const industries = [
+        "health care",
+        "industrials",
+        "consumer discretionary",
+        "consumer staples",
+        "information technology",
+        "utilities",
+        "financials",
+        "real estate",
+        "materials",
+        "energy",
+        "telecommunication services"
+    ];
+    
+    if (industries.includes(input)) {
+        return true;
+    }
+    
+    return false;
 }
 
-const MockDataGrid = () => {
+function IndustrySearchBar(props) {
+    const [innerSearch, setInnerSearch] = useState('');
+    const [validity, setValidity] = useState(false);
+    return (
+        <Form className="industryInput">
+            <input
+                // aria-labelledby="search-button"
+                name="industry"
+                id="industrySearch"
+                placeholder="Industry"
+                value={innerSearch}
+                onChange={(event) => {
+                    setInnerSearch(event.target.value);
+                    
+                }}
+                
+            />
+            
+            
+            <button
+                type="submit"
+                id="industry-search-button"
+                onClick={ (event) => {
+                    event.preventDefault();
+                    if (validateInput(innerSearch.toLowerCase())) {
+                        props.onSubmit(innerSearch);
+                    }
+                }}
+                ></button>
+            <Input
+                type="select"
+                name="select"
+                id="industry-select">
+                <option>Healthcare</option>
+                <option>Industrials</option>
+                <option>Consumer Discretionary</option>
+                <option>Consumer Staples</option>
+                <option>Information Technology</option>
+                <option>Utilities</option>
+                <option>Financials</option>
+                <option>Real Estate</option>
+                <option>Materials</option>
+                <option>Energy</option>
+                <option>Telecommunication Services</option>
+            </Input>
+        </Form>
+    );
+    
+}
+
+function useStocks(searchTerm) {
+    const [stocks, setStockList] = useState([]);
+    // const [error, setError] = useState(null);
+
+    useEffect( () => {
+            getStocks(searchTerm)
+                .then((stocks) => {
+                    setStockList(stocks);
+                });
+        }, [searchTerm],
+    );
+
+    return { stocks };
+}
+
+// function validate
+
+function getStocks(searchTerm) {
+    
+    const url = `http://131.181.190.87:3000/stocks/symbols`;
+    const specifier = `?industry=${searchTerm}`;
+    
+    if (searchTerm !== '') {
+        const newURL = url + specifier;
+        return (
+            fetch(newURL)
+                .then((res) => res.json())
+                .then((stocks) =>
+                    stocks.map((stock) => {
+                        return {
+                            name: stock.name,
+                            symbol: stock.symbol,
+                            industry: stock.industry
+                        };
+                    })
+                )
+        );
+    }
+    
+    return (
+        fetch(url)
+            .then((res) => res.json())
+            .then((stocks) =>
+                stocks.map((stock) => {
+                    return {
+                        name: stock.name,
+                        symbol: stock.symbol,
+                        industry: stock.industry
+                    };
+                })
+            )
+    );
+}
+
+const StockGrid = () => {
+    const [rowData, setRowData] = useState([]);
+    const columns = [
+        { headerName: "Name", field: "name", sortable: true },
+        { headerName: "Symbol", field: "symbol", sortable: true },
+        { headerName: "Industry", field: "industry", sortable: true, filter: true }
+    ]
+    
+    const [search, setSearch] = useState('');
+    const { stocks } = useStocks(search);
+    
+    // useEffect(() => {
+    //     setRowData(stocks);
+    // });
+    
     return (
         <div className="container gridContainer">
-            <h1>Companies &  Their Industries</h1>
+            <div
+                className="search-bar-container">
+                <IndustrySearchBar onSubmit={setSearch} />
+            </div>
             <div
                 className="ag-theme-balham"
                 style={{height: "500px", width: "620px"}}>
                 
                 <AgGridReact
-                    columnDefs={mockData.columns}
-                    rowData={mockData.rowData}
-                    pagination={true}
+                    id="stock-table"
+                    columnDefs={columns}
+                    rowData={stocks}
                     paginationPageSize={15}
                 
                 />
@@ -56,15 +175,92 @@ export default function Home() {
                 </h3>
                 <p>
                     Browse selected stock data from 2019-11-06 to 2020-03-24.
-                    Simple categorisation via Industry, Company Name, or Symbol,
-                    and create an account to view stock information between specific dates!
+                    Sort by Industry, or select a Company to view.
+                    <br/>
+                    Create an account to view stock information between specific dates!
                 </p>
             </div>
             
             <div className="homePageTable">
-                <MockDataGrid />
+                <StockGrid />
             </div>
         </main>
     );
 }
 
+
+
+
+
+// function useStocks(searchTerm) {
+//     const [stocks, setStocks] = useState([]);
+//
+//     useEffect( () => {
+//         getStocks(searchTerm)
+//             .then((stocks) => {
+//                 setStocks(stocks);
+//             })
+//         }, [searchTerm]
+//     );
+//
+//     return {stocks};
+// }
+//
+// function getStocks(searchTerm) {
+//
+//     const url = `http://131.181.190.87:3000/stocks/symbols?industry=`;
+//
+//     return fetch(url)
+//         .then( (res) => res.json() )
+//         .then( (res) => {
+//             res.map((item) => ({
+//                 name: item.name,
+//                 symbol: item.symbol,
+//                 industry: item.industry
+//             }))
+//         });
+// }
+// const specifier = `?industry=${searchTerm}`;
+// const [stockList, setStockList] = useState([]);
+// useEffect( () => {
+//     fetch(`http://131.181.190.87:3000/stocks/symbols`)
+//         .then(res => res.json())
+//         .then(stocks =>
+//                     stocks.map(stock => {
+//                         return {
+//                             name: stock.name,
+//                             symbol: stock.symbol,
+//                             industry: stock.industry
+//                         };
+//                     })
+//                 )
+//         .then(stocks => setStockList(stocks));
+// }, [],
+// );
+//     stocks.map(stock => {
+//         return {
+//             name: stock.name,
+//             symbol: stock.symbol,
+//             industry: stock.industry
+//         };
+//     })
+// )
+// .then(stocks => setRowData(stocks));
+
+// useEffect( () => {
+//     fetch(`http://131.181.190.87:3000/stocks/symbols`)
+//         .then(res => res.json())
+//         .then(stocks =>
+//             stocks.map(stock => {
+//                 return {
+//                     name: stock.name,
+//                     symbol: stock.symbol,
+//                     industry: stock.industry
+//                 };
+//             })
+//         )
+//         .then(stocks => setRowData(stocks));
+// }, []);
+
+// const [search, setSearch] = useState('');
+// const { stocks } = useStocks(search);

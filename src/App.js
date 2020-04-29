@@ -9,23 +9,30 @@ import { Button, Badge } from 'reactstrap';
 
 // Components
 import Header from "./components/Header";
+import AuthedHeader from "./components/AuthedHeader";
 import Footer from "./components/Footer";
 
 // Pages
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import About from "./pages/About";
+import Account from "./pages/Account";
+import StockDetails from "./pages/Stock-Details";
+
 
 
 
 
 
 function App() {
+    const [loggedIn, setLoggedIn] = useState(false);
+    
     return (
         <Router>
             <div className="App">
                 
-                <Header />
+                {(loggedIn) ? <AuthedHeader /> : <Header />}
 
                 <Switch>
                     <Route exact path="/">
@@ -33,12 +40,25 @@ function App() {
                     </Route>
 
                     <Route path="/login">
-                        <Login />
+                        <Login {setLoggedIn}/>
                     </Route>
-
+                    
+                    <Route path="/register">
+                        <Register />
+                    </Route>
+                    
+                    <Route path="/stock-details">
+                        <StockDetails />
+                    </Route>
+                    
+                    <Route path="/account">
+                        <Account />
+                    </Route>
+    
                     <Route path="/about">
                         <About />
                     </Route>
+                    
                 </Switch>
                 
                 <Footer />

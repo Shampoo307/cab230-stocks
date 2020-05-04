@@ -4,11 +4,13 @@ import React from "react";
 export default function Footer() {
 	return (
 		<footer>
-      <span>
-        American Stock Exchange
-        <br />
-        Copyright &copy; 2020{" "}
-      </span>
+      		<span>
+        	American Stock Exchange
+        	<br />
+        	Copyright &copy; Thomas Crilly, N9960783
+		  	<br />
+		  	2020
+      		</span>
 		</footer>
 	);
 }

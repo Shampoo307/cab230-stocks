@@ -40,7 +40,7 @@ function App() {
                     </Route>
 
                     <Route path="/login">
-                        <Login {setLoggedIn}/>
+                        <Login onClick={setLoggedIn}/>
                     </Route>
                     
                     <Route path="/register">

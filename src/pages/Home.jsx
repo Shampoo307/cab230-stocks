@@ -34,6 +34,7 @@ function validateInput(input) {
 
 function IndustrySearchBar(props) {
     const [innerSearch, setInnerSearch] = useState('');
+    // const [dropdownSelect, setDropdown] = useState();
     const [validity, setValidity] = useState(false);
     return (
         <Form className="industryInput">
@@ -41,7 +42,7 @@ function IndustrySearchBar(props) {
                 // aria-labelledby="search-button"
                 name="industry"
                 id="industrySearch"
-                placeholder="Industry"
+                placeholder="Industry or Symbol"
                 value={innerSearch}
                 onChange={(event) => {
                     setInnerSearch(event.target.value);
@@ -64,19 +65,23 @@ function IndustrySearchBar(props) {
             <Input
                 type="select"
                 name="select"
-                id="industry-select">
-                <option>All</option>
-                <option>Healthcare</option>
-                <option>Industrials</option>
-                <option>Consumer Discretionary</option>
-                <option>Consumer Staples</option>
-                <option>Information Technology</option>
-                <option>Utilities</option>
-                <option>Financials</option>
-                <option>Real Estate</option>
-                <option>Materials</option>
-                <option>Energy</option>
-                <option>Telecommunication Services</option>
+                id="industry-select"
+                onChange={ (event) => {
+                    props.onSubmit(event.target.value);
+                }}
+            >
+                <option value="">All</option>
+                <option value="health care">Healthcare</option>
+                <option value="industrials">Industrials</option>
+                <option value="consumer discretionary">Consumer Discretionary</option>
+                <option value="consumer staples">Consumer Staples</option>
+                <option value="information technology">Information Technology</option>
+                <option value="utilities">Utilities</option>
+                <option value="financials">Financials</option>
+                <option value="real estate">Real Estate</option>
+                <option value="materials">Materials</option>
+                <option value="energy">Energy</option>
+                <option value="telecommunication services">Telecommunication Services</option>
             </Input>
         </Form>
     );
@@ -184,7 +189,9 @@ const StockGrid = () => {
                     columnDefs={columns}
                     rowData={stocks}
                     paginationPageSize={15}
-                
+                    // onRowClicked={
+                    //
+                    // }
                 />
             </div>
         </div>

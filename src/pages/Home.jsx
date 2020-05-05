@@ -21,6 +21,13 @@ function validateInput(input) {
     if (industries.includes(input)) {
         return true;
     }
+    if (input.toString().length >= 1
+        && input.toString().length <= 5) {
+        return true;
+    }
+    if (input.toString() === '') {
+        return true;
+    }
     
     return false;
 }
@@ -58,6 +65,7 @@ function IndustrySearchBar(props) {
                 type="select"
                 name="select"
                 id="industry-select">
+                <option>All</option>
                 <option>Healthcare</option>
                 <option>Industrials</option>
                 <option>Consumer Discretionary</option>
@@ -97,7 +105,8 @@ function getStocks(searchTerm) {
     const url = `http://131.181.190.87:3000/stocks/symbols`;
     const specifier = `?industry=${searchTerm}`;
     
-    if (searchTerm !== '') {
+    if (searchTerm !== ''
+        && searchTerm.toString().length > 5) {
         const newURL = url + specifier;
         return (
             fetch(newURL)
@@ -113,7 +122,26 @@ function getStocks(searchTerm) {
                 )
         );
     }
-    
+    else if (searchTerm.toString().length >= 1
+                && searchTerm.toString().length <= 5) {
+        const newURL = `http://131.181.190.87:3000/stocks/${searchTerm.toString().toUpperCase()}`;
+        let stockArray = new Array(1);
+        return (
+            fetch(newURL)
+                .then((res) => res.json())
+                .then((stock) =>
+                     {
+                         return [
+                             { name: stock.name,
+                                 symbol: stock.symbol,
+                                 industry: stock.industry
+                             }
+                         ];
+                        })
+                
+        );
+    }
+    //
     return (
         fetch(url)
             .then((res) => res.json())
@@ -140,9 +168,6 @@ const StockGrid = () => {
     const [search, setSearch] = useState('');
     const { stocks } = useStocks(search);
     
-    // useEffect(() => {
-    //     setRowData(stocks);
-    // });
     
     return (
         <div className="container gridContainer">
@@ -175,7 +200,7 @@ export default function Home() {
                 </h3>
                 <p>
                     Browse selected stock data from 2019-11-06 to 2020-03-24.
-                    Sort by Industry, or select a Company to view.
+                    Search by Stock Symbol or Industry, sort by Industry, or select a Company to view.
                     <br/>
                     Create an account to view stock information between specific dates!
                 </p>
@@ -188,79 +213,3 @@ export default function Home() {
     );
 }
 
-
-
-
-
-// function useStocks(searchTerm) {
-//     const [stocks, setStocks] = useState([]);
-//
-//     useEffect( () => {
-//         getStocks(searchTerm)
-//             .then((stocks) => {
-//                 setStocks(stocks);
-//             })
-//         }, [searchTerm]
-//     );
-//
-//     return {stocks};
-// }
-//
-// function getStocks(searchTerm) {
-//
-//     const url = `http://131.181.190.87:3000/stocks/symbols?industry=`;
-//
-//     return fetch(url)
-//         .then( (res) => res.json() )
-//         .then( (res) => {
-//             res.map((item) => ({
-//                 name: item.name,
-//                 symbol: item.symbol,
-//                 industry: item.industry
-//             }))
-//         });
-// }
-// const specifier = `?industry=${searchTerm}`;
-// const [stockList, setStockList] = useState([]);
-// useEffect( () => {
-//     fetch(`http://131.181.190.87:3000/stocks/symbols`)
-//         .then(res => res.json())
-//         .then(stocks =>
-//                     stocks.map(stock => {
-//                         return {
-//                             name: stock.name,
-//                             symbol: stock.symbol,
-//                             industry: stock.industry
-//                         };
-//                     })
-//                 )
-//         .then(stocks => setStockList(stocks));
-// }, [],
-// );
-//     stocks.map(stock => {
-//         return {
-//             name: stock.name,
-//             symbol: stock.symbol,
-//             industry: stock.industry
-//         };
-//     })
-// )
-// .then(stocks => setRowData(stocks));
-
-// useEffect( () => {
-//     fetch(`http://131.181.190.87:3000/stocks/symbols`)
-//         .then(res => res.json())
-//         .then(stocks =>
-//             stocks.map(stock => {
-//                 return {
-//                     name: stock.name,
-//                     symbol: stock.symbol,
-//                     industry: stock.industry
-//                 };
-//             })
-//         )
-//         .then(stocks => setRowData(stocks));
-// }, []);
-
-// const [search, setSearch] = useState('');
-// const { stocks } = useStocks(search);

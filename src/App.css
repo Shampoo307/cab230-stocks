@@ -87,7 +87,7 @@ nav ul li a, .register-button a {
   transition: 0.3s ease all;
 }
 
-nav ul li a:hover, .register-button a:hover {
+nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
   background: #fff;
   text-decoration: none;
   color: #1E2432;
@@ -145,10 +145,24 @@ nav ul li a:hover, .register-button a:hover {
   border-bottom: 0px;
 }
 
+#view-stock-button {
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+  margin: 0px 0px 0px 30px;
+  padding: 0;
+  border: 0;
+  color: black;
+  background: #abc0d5;
+  padding: 3px;
+  border-radius: 3px;
+  transition: 0.3s ease all;
+}
+
 #industry-select {
   display: inline-block;
   width: 240px;
-  margin-left: 150px;
+  margin-left: 29px;
   /*padding-left: 4px;*/
   /*padding-top: 4px;*/
   /*padding-bottom: 4px;*/
@@ -162,6 +176,15 @@ nav ul li a:hover, .register-button a:hover {
   justify-content: center;
 
 }
+
+/* Stock Details Page */
+/*.symbol-undefined {*/
+/*  background: #1E2432;*/
+/*  text-align: center;*/
+/*  width: 70%;*/
+/*  */
+/*}*/
+
 
 /* Login Page */
 .login {
@@ -211,7 +234,7 @@ nav ul li a:hover, .register-button a:hover {
 }
 
 
-.about {
+.about, .symbol-undefined {
   background: #1E2432;
   color: #fff;
   text-align: center;

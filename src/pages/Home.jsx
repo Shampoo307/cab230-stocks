@@ -1,6 +1,8 @@
 import  React, { useState, useEffect } from 'react';
 import {AgGridReact} from "ag-grid-react";
 import { Form, FormGroup, Label, Input } from 'reactstrap';
+import {Link} from "react-router-dom";
+
 
 
 function validateInput(input) {
@@ -34,8 +36,6 @@ function validateInput(input) {
 
 function IndustrySearchBar(props) {
     const [innerSearch, setInnerSearch] = useState('');
-    // const [dropdownSelect, setDropdown] = useState();
-    const [validity, setValidity] = useState(false);
     return (
         <Form className="industryInput">
             <input
@@ -62,11 +62,22 @@ function IndustrySearchBar(props) {
                     }
                 }}
                 ></button>
+            <Link to={{pathname: "/stock-details",
+                        stockProps: {
+                            symbol: props.stockSymbol
+                        }
+            }}>
+                <button
+                    id="view-stock-button"
+                >View Stock</button>
+            </Link>
+            
             <Input
                 type="select"
                 name="select"
                 id="industry-select"
                 onChange={ (event) => {
+                    
                     props.onSubmit(event.target.value);
                 }}
             >
@@ -90,7 +101,6 @@ function IndustrySearchBar(props) {
 
 function useStocks(searchTerm) {
     const [stocks, setStockList] = useState([]);
-    // const [error, setError] = useState(null);
 
     useEffect( () => {
             getStocks(searchTerm)
@@ -103,7 +113,6 @@ function useStocks(searchTerm) {
     return { stocks };
 }
 
-// function validate
 
 function getStocks(searchTerm) {
     
@@ -163,22 +172,22 @@ function getStocks(searchTerm) {
 }
 
 const StockGrid = () => {
-    const [rowData, setRowData] = useState([]);
-    const columns = [
+    
+    const stocksColumns = [
         { headerName: "Name", field: "name", sortable: true },
         { headerName: "Symbol", field: "symbol", sortable: true },
         { headerName: "Industry", field: "industry", sortable: true, filter: true }
     ]
     
+    const [selectedStock, setSelectedStock] = useState('');
     const [search, setSearch] = useState('');
     const { stocks } = useStocks(search);
-    
     
     return (
         <div className="container gridContainer">
             <div
                 className="search-bar-container">
-                <IndustrySearchBar onSubmit={setSearch} />
+                <IndustrySearchBar onSubmit={setSearch} stockSymbol={selectedStock} />
             </div>
             <div
                 className="ag-theme-balham"
@@ -186,12 +195,13 @@ const StockGrid = () => {
                 
                 <AgGridReact
                     id="stock-table"
-                    columnDefs={columns}
+                    columnDefs={stocksColumns}
                     rowData={stocks}
                     paginationPageSize={15}
-                    // onRowClicked={
-                    //
-                    // }
+                    rowSelection="single"
+                    onRowClicked={ (event) => {
+                       setSelectedStock(event.data.symbol);
+                    }}
                 />
             </div>
         </div>

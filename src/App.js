@@ -47,8 +47,8 @@ function App() {
                         <Register />
                     </Route>
                     
-                    <Route path="/stock-details">
-                        <StockDetails />
+                    <Route path="/stock-details"
+                           component={StockDetails}>
                     </Route>
                     
                     <Route path="/account">

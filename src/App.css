@@ -178,7 +178,7 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
 }
 
  /* Stock Details Page */
-.stock-details {
+.stock-details-container {
   padding-top: 20px;
   background: #1E2432;
   text-align: center;
@@ -190,8 +190,9 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
 .stock-details-header {
   text-align: start;
   display: inline-block;
-  width: 70%;
+  width: 46%;
   justify-content: center;
+  padding-bottom: 40px;
 }
 
 .stock-details-header h2 {
@@ -202,6 +203,32 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
   margin-bottom: 0px;
   font-size: 1.6em;
 }
+
+.stock-details-table {
+  /*height: auto;*/
+  /*width: auto;*/
+  display: grid;
+  justify-content: center;
+  text-align: start;
+}
+
+
+.to-home-from-undefined {
+  width: 150px;
+  font-size: 1.3em;
+  margin-top: 40px;
+  padding: 20px;
+  border: 0;
+  color: black;
+  background: #abc0d5;
+  border-radius: 10px;
+  transition: 0.2s ease all;
+}
+.to-home-from-undefined:hover {
+  background: #fff;
+  text-decoration: none;
+}
+
 
 /* Login Page */
 .login {

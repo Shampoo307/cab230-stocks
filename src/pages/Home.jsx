@@ -119,6 +119,7 @@ function getStocks(searchTerm) {
     const url = `http://131.181.190.87:3000/stocks/symbols`;
     const specifier = `?industry=${searchTerm}`;
     
+    // Stocks by industry
     if (searchTerm !== ''
         && searchTerm.toString().length > 5) {
         const newURL = url + specifier;
@@ -136,10 +137,11 @@ function getStocks(searchTerm) {
                 )
         );
     }
+    // Stock by symbol
     else if (searchTerm.toString().length >= 1
                 && searchTerm.toString().length <= 5) {
         const newURL = `http://131.181.190.87:3000/stocks/${searchTerm.toString().toUpperCase()}`;
-        let stockArray = new Array(1);
+        // let stockArray = new Array(1);
         return (
             fetch(newURL)
                 .then((res) => res.json())
@@ -155,7 +157,7 @@ function getStocks(searchTerm) {
                 
         );
     }
-    //
+    // All stocks
     return (
         fetch(url)
             .then((res) => res.json())

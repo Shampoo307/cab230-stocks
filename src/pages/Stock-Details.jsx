@@ -46,12 +46,12 @@ export default function StockDetails(props) {
 
 function StockContainer({symbol}) {
 	const stockColumns = [
-		{ headerName: "Timestamp", field: "timestamp", sortable: false, width: 170 },
-		{ headerName: "Open", field: "open", sortable: false, width: 70 },
-		{ headerName: "High", field: "high", sortable: false, width: 70 },
-		{ headerName: "Low", field: "low", sortable: false, width: 70 },
-		{ headerName: "Close", field: "close", sortable: false, width: 70 },
-		{ headerName: "Volumes", field: "volumes", sortable: false, width: 100 }
+		{ headerName: "Timestamp", field: "timestamp", sortable: false, width: 140 },
+		{ headerName: "Open", field: "open", sortable: false, width: 100 },
+		{ headerName: "High", field: "high", sortable: false, width: 100 },
+		{ headerName: "Low", field: "low", sortable: false, width: 100 },
+		{ headerName: "Close", field: "close", sortable: false, width: 100 },
+		{ headerName: "Volumes", field: "volumes", sortable: false, width: 140 }
 	]
 	
 	const fields = {
@@ -94,7 +94,7 @@ function StockContainer({symbol}) {
 	}, [symbol]);
 	const stockRows = [
 		{
-			timestamp: stockInfo.timestamp,
+			timestamp: stockInfo.timestamp.slice(0, 9),
 			open: stockInfo.open,
 			high: stockInfo.high,
 			low: stockInfo.low,
@@ -135,16 +135,33 @@ function StockContainer({symbol}) {
 			</div>
 			<div className="stock-details-table">
 				<div className="ag-theme-balham"
-					 style={{height: "65px", width: "580px"}}
+					 style={{height: "65px", width: "682px"}}
 				>
 					<AgGridReact
 						id="stock-details-table"
 						columnDefs={stockColumns}
 						rowData={stockRows}
+						rowClass="stock-detail-row-class"
 						
 					/>
 					
 				</div>
+			</div>
+			<div className="user-buttons-stock">
+				<p>
+				Log in or Register to view both tabled and charted stock information
+					between a date range!
+				</p>
+				<Link to="/login">
+					<button id="login-from-stock">
+						Login
+					</button>
+				</Link>
+				<Link to="/register">
+					<button id="register-from-stock">
+					Register
+					</button>
+				</Link>
 			</div>
 			
 			

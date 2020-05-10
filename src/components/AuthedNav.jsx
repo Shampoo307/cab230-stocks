@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import React from "react";
 
 
-export default function Nav() {
+export default function AuthedNav(props) {
 	return (
 		<nav className="navComponent">
 			<ul>
@@ -13,11 +13,11 @@ export default function Nav() {
 					<Link to="/stock-details">View Stocks</Link>
 				</li>
 				<li>
-					<Link to="/">Logout</Link>
+					<Link to="/" onClick={() => {
+						props.logIn(false);
+					}}>Logout</Link>
 				</li>
-				<li>
-					<Link to="/account">Account</Link>
-				</li>
+				
 				<li>
 					<Link to="/about">About</Link>
 				</li>

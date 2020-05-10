@@ -17,7 +17,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
-import Account from "./pages/Account";
 import StockDetails from "./pages/Stock-Details";
 
 
@@ -32,7 +31,7 @@ function App() {
         <Router>
             <div className="App">
                 
-                {(loggedIn) ? <AuthedHeader /> : <Header />}
+                {(loggedIn) ? <AuthedHeader logIn={setLoggedIn} /> : <Header />}
 
                 <Switch>
                     <Route exact path="/">
@@ -40,7 +39,7 @@ function App() {
                     </Route>
 
                     <Route path="/login">
-                        <Login onClick={setLoggedIn}/>
+                        <Login logIn={setLoggedIn}/>
                     </Route>
                     
                     <Route path="/register">
@@ -51,9 +50,6 @@ function App() {
                            component={StockDetails}>
                     </Route>
                     
-                    <Route path="/account">
-                        <Account />
-                    </Route>
     
                     <Route path="/about">
                         <About />

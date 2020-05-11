@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import {isElement} from "react-dom/test-utils";
+import Register from "./Register";
 
 
 export default function Login(props) {
@@ -11,12 +12,15 @@ export default function Login(props) {
     
     return (
         <div className="login">
-            <p>Log in or Register to view stock data between specific dates.</p>
+            <p>{
+                authed ? "You are logged in! Return to home to browse stocks." : "Log in or Register to view stock data between specific dates."
+            }</p>
             <LoginForm onSubmit={setUserDetails} />
             {/*<Register />*/}
             {
                 authed ? props.logIn(true) : console.log("UNSUCCESSFUL")
             }
+            <RegisterButton />
             
         </div>
     );
@@ -96,11 +100,11 @@ function LoginForm(props) {
                 <FormGroup
                     className="email-group">
                     <Label
-                        for="emailAddress"
+                        for="loginEmailInput"
                     >{emailLabel}</Label>
                     <Input
                         type="text"
-                        name="emailAddress"
+                        name="loginEmailInput"
                         placeholder="Email Address"
                         value={email}
                         onChange={(event) => {
@@ -110,11 +114,11 @@ function LoginForm(props) {
                     
                     <Label
                         className="password-group"
-                        for="password"
+                        for="loginPasswordInput"
                     >{passwordLabel}</Label>
                     <Input
                         type="password"
-                        name="password"
+                        name="loginPasswordInput"
                         placeholder="Password"
                         value={password}
                         onChange={(event) => {
@@ -135,10 +139,16 @@ function LoginForm(props) {
         </div>
     );
     
-    
 }
 
-
+function RegisterButton() {
+    return (
+        <div className="register-button">
+            <Link to="/register"
+            >Register</Link>
+        </div>
+    )
+}
 
 // function LoginForm() {
 //     const [email, setEmail] = useState('');

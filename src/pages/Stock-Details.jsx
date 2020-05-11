@@ -37,14 +37,45 @@ export default function StockDetails(props) {
 	console.log("stock symbol", stockSymbol);
 	return (
 		<div className="stock-details-container">
-			<StockContainer symbol={stockSymbol} />
+			<StockDetailsHeader symbol={stockSymbol} />
+			{
+				props.location.stockProps.loggedIn
+					? <StockContainerAuthed symbol={stockSymbol} />
+					: <StockContainerUnAuthed symbol={stockSymbol} />
+			}
 		</div>
 		
 
 	)
 }
 
-function StockContainer({symbol}) {
+function StockDetailsHeader(props) {
+	const [stockInfo, setStockInfo] = useState({});
+	const url = `http://131.181.190.87:3000/stocks/${props.symbol}`;
+	
+	fetch(url)
+		.then((res) => res.json())
+		.then((stock) => {
+				return {
+					name: stock.name,
+					symbol: stock.symbol,
+					industry: stock.industry
+				};
+			}
+		)
+		.then((stock) => {
+			setStockInfo(stock);
+		});
+		
+	return (
+		<div className="stock-details-header">
+			<h2>{stockInfo.symbol} | {stockInfo.name}</h2>
+			<h3>{stockInfo.industry}</h3>
+		</div>
+	);
+}
+
+function StockContainerUnAuthed({symbol}) {
 	const stockColumns = [
 		{ headerName: "Timestamp", field: "timestamp", sortable: false, width: 140 },
 		{ headerName: "Open", field: "open", sortable: false, width: 100 },
@@ -55,9 +86,9 @@ function StockContainer({symbol}) {
 	]
 	
 	const fields = {
-		name: "",
-		symbol: "",
-		industry: "",
+		// name: "",
+		// symbol: "",
+		// industry: "",
 		timestamp: "",
 		open: "",
 		high: "",
@@ -77,9 +108,9 @@ function StockContainer({symbol}) {
 			.then((res) => res.json())
 			.then((stock) => {
 				return {
-					name: stock.name,
-					symbol: stock.symbol,
-					industry: stock.industry,
+					// name: stock.name,
+					// symbol: stock.symbol,
+					// industry: stock.industry,
 					timestamp: stock.timestamp,
 					open: stock.open,
 					high: stock.high,
@@ -91,6 +122,7 @@ function StockContainer({symbol}) {
 			.then((stock) => {
 				setStockInfo(stock);
 			})
+		
 	}, [symbol]);
 	const stockRows = [
 		{
@@ -129,10 +161,10 @@ function StockContainer({symbol}) {
 	
 	return (
 		<div>
-			<div className="stock-details-header">
-				<h2>{stockInfo.symbol} | {stockInfo.name}</h2>
-				<h3>{stockInfo.industry}</h3>
-			</div>
+			{/*<div className="stock-details-header">*/}
+			{/*	<h2>{stockInfo.symbol} | {stockInfo.name}</h2>*/}
+			{/*	<h3>{stockInfo.industry}</h3>*/}
+			{/*</div>*/}
 			<div className="stock-details-table">
 				<div className="ag-theme-balham"
 					 style={{height: "65px", width: "682px"}}
@@ -171,6 +203,71 @@ function StockContainer({symbol}) {
 		</div>
 	)
 }
+
+function StockContainerAuthed({symbol}) {
+	const stockColumns = [
+		{ headerName: "Timestamp", field: "timestamp", sortable: false, width: 140 },
+		{ headerName: "Open", field: "open", sortable: false, width: 100 },
+		{ headerName: "High", field: "high", sortable: false, width: 100 },
+		{ headerName: "Low", field: "low", sortable: false, width: 100 },
+		{ headerName: "Close", field: "close", sortable: false, width: 100 },
+		{ headerName: "Volumes", field: "volumes", sortable: false, width: 140 }
+	]
+	
+	const [stockInfo, setStockInfo] = useState([]);
+	console.log("set stockInfo", stockInfo);
+	const specifierAll = `?=from=2019-11-06T00%3A00%3A00.000Z&to=2020-03-24T00%3A00%3A00.000Z`
+	const url = `http://131.181.190.87:3000/stocks/authed/${symbol}${specifierAll}`;
+	const token = localStorage.getItem("token");
+	const headers = {
+		accept: "application/json",
+		"Content-Type": "application/json",
+		Authorization: `Bearer ${token}`
+	}
+	
+	useEffect( () => {
+		fetch(url, { headers })
+			.then((res) => res.json())
+			.then((stock) =>
+				stock.map((stock) => {
+					return {
+						// name: stock.name,
+						// symbol: stock.symbol,
+						// industry: stock.industry,
+						timestamp: stock.timestamp,
+						open: stock.open,
+						high: stock.high,
+						low: stock.low,
+						close: stock.close,
+						volumes: stock.volumes
+					};
+			}))
+			.then((stock) => {
+				setStockInfo(stock);
+			}
+			)
+		
+	}, [symbol]);
+	
+	
+	return (
+		<div>
+			<div className="auth-stock-table">
+				<div
+					className="ag-theme-balham"
+					style={{height: "500px", width: "682px"}}>
+					<AgGridReact
+						id="auth-stock-table"
+						columnDefs={stockColumns}
+						rowData={stockInfo}
+						
+						/>
+				</div>
+			</div>
+		</div>
+	)
+}
+
 // function getStock(stockSymbol) {
 // 	console.log("getting");
 // 	const url = `http://131.181.190.87:3000/stocks/${stockSymbol}`;

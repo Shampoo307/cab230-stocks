@@ -35,7 +35,7 @@ function App() {
 
                 <Switch>
                     <Route exact path="/">
-                        <Home />
+                        <Home LoggedIn={loggedIn}/>
                     </Route>
 
                     <Route path="/login">

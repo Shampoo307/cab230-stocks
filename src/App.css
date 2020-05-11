@@ -205,7 +205,7 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
   font-size: 1.6em;
 }
 
-.stock-details-table {
+.stock-details-table, .auth-stock-table {
   /*height: auto;*/
   /*width: auto;*/
   display: grid;

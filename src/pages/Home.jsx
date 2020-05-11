@@ -64,7 +64,8 @@ function IndustrySearchBar(props) {
                 ></button>
             <Link to={{pathname: "/stock-details",
                         stockProps: {
-                            symbol: props.stockSymbol
+                            symbol: props.stockSymbol,
+                            loggedIn: props.LoggedIn
                         }
             }}>
                 <button
@@ -173,7 +174,7 @@ function getStocks(searchTerm) {
     );
 }
 
-const StockGrid = () => {
+const StockGrid = (props) => {
     
     const stocksColumns = [
         { headerName: "Name", field: "name", sortable: true },
@@ -189,7 +190,7 @@ const StockGrid = () => {
         <div className="container gridContainer">
             <div
                 className="search-bar-container">
-                <IndustrySearchBar onSubmit={setSearch} stockSymbol={selectedStock} />
+                <IndustrySearchBar onSubmit={setSearch} stockSymbol={selectedStock} LoggedIn={props.LoggedIn} />
             </div>
             <div
                 className="ag-theme-balham"
@@ -210,7 +211,7 @@ const StockGrid = () => {
     );
 }
 
-export default function Home() {
+export default function Home(props) {
     return (
         <main className="homePage">
             <div className="greeting">
@@ -226,7 +227,7 @@ export default function Home() {
             </div>
             
             <div className="homePageTable">
-                <StockGrid />
+                <StockGrid LoggedIn={props.LoggedIn}/>
             </div>
         </main>
     );

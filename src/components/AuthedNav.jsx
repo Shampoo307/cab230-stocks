@@ -7,11 +7,11 @@ export default function AuthedNav(props) {
 		<nav className="navComponent">
 			<ul>
 				<li>
-					<Link to="/">Home</Link>
+					<Link to="/authed-home">Home</Link>
 				</li>
-				<li>
-					<Link to="/stock-details">View Stocks</Link>
-				</li>
+				{/*<li>*/}
+				{/*	<Link to="/stock-details">View Stocks</Link>*/}
+				{/*</li>*/}
 				<li>
 					<Link to="/" onClick={() => {
 						props.logIn(false);

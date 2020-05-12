@@ -25,9 +25,6 @@ export default function AuthedHeader(props) {
 					<li>
 						<Link to="/">Home</Link>
 					</li>
-					{/*<li>*/}
-					{/*	<Link to="/stock-details">View Stocks</Link>*/}
-					{/*</li>*/}
 					<li>
 						<Link to="/" onClick={() => {
 							props.logIn(false);

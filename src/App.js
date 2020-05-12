@@ -20,10 +20,6 @@ import About from "./pages/About";
 import StockDetails from "./pages/Stock-Details";
 
 
-
-
-
-
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     

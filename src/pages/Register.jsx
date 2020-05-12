@@ -1,88 +1,73 @@
 import React, {useEffect, useState} from "react";
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
+
 export default function Register() {
 	const [userDetails, setUserDetails] = useState({});
-	let registered = useUser(userDetails)
+	const [message, setMessage] = useState('');
+	let registered = useUser(setMessage, userDetails);
+	const successMessage = "Registered successfully! Please Log In to view stock specifics.";
 	
-	return (
-		<div className="login">
-			<p>{
-				registered ? "Registered successfully! Please Log In to view stock specifics." : "Log in or Register to view stock data between specific dates."
-			}</p>
-			
-			<RegisterForm onSubmit={setUserDetails}/>
-			{/*<Register />*/}
-		</div>
-	);
-}
-
-function RegisterForm(props) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	return (
-		<div className="login-form">
-			
-			<Form>
-				<FormGroup
-					className="username-group">
-					<Label
-						for="registerEmailInput"
-					>Username: </Label>
-					<Input
-						type="text"
-						name="registerEmailInput"
-						placeholder="Username"
-						value={email}
-						onChange={(event) => {
-							setEmail(event.target.value);
-						}}
-					/>
-					
-					<Label
-						className="password-group"
-						for="registerPasswordInput"
-					>Password: </Label>
-					<Input
-						type="password"
-						name="registerPasswordInput"
-						placeholder="Password"
-						value={password}
-						onChange={(event) => {
-							setPassword(event.target.value);
-						}}
-					/>
-					{/*<Label*/}
-					{/*	className="password-group"*/}
-					{/*	for="confirm-password"*/}
-					{/*>Confirm Password: </Label>*/}
-					{/*<Input*/}
-					{/*	type="password"*/}
-					{/*	name="confirm-password"*/}
-					{/*	placeholder="Password"*/}
-					{/*/>*/}
-					<Button
-						type="submit"
-						onClick={ (event) => {
-							event.preventDefault();
-							console.log(email);
-							console.log(password);
-							props.onSubmit({email: email, password: password});
-						}}
-					>Register Account</Button>
-				</FormGroup>
-			</Form>
+		<div className="login">
+			<p>{
+				registered
+					? successMessage
+					: (userDetails.email !== undefined ? message : 'Log in or Register to view stock data between specific dates.')
+			}</p>
+			<div className="login-form">
+				<Form>
+					<FormGroup
+						className="username-group">
+						<Label
+							for="registerEmailInput"
+						>Username: </Label>
+						<Input
+							type="text"
+							name="registerEmailInput"
+							placeholder="Username"
+							value={email}
+							onChange={(event) => {
+								setEmail(event.target.value);
+							}}
+						/>
+						<Label
+							className="password-group"
+							for="registerPasswordInput"
+						>Password: </Label>
+						<Input
+							type="password"
+							name="registerPasswordInput"
+							placeholder="Password"
+							value={password}
+							onChange={(event) => {
+								setPassword(event.target.value);
+							}}
+						/>
+						<Button
+							type="submit"
+							onClick={ (event) => {
+								event.preventDefault();
+								console.log(email);
+								console.log(password);
+								setUserDetails({email: email, password: password});
+							}}
+						>Register Account</Button>
+					</FormGroup>
+				</Form>
+			</div>
 		</div>
 	);
 }
 
-function useUser(userDetails) {
+function useUser(setMessage, userDetails) {
 	const [registered, setRegistered] = useState(false);
 	
 	useEffect( () => {
 			if (userDetails.email !== null
 				& userDetails.password !== null) {
-				
 				getRegistration(userDetails)
 					.then((response) => {
 						if (response.success) {
@@ -93,8 +78,8 @@ function useUser(userDetails) {
 							setRegistered(false);
 							console.log("got error:", response.message);
 						}
+						setMessage(response.message);
 					})
-				
 			}
 		}, [userDetails],
 	);
@@ -129,17 +114,4 @@ function getRegistration(userDetails) {
 				}
 			})
 	);
-	
-	
 }
-
-//
-// function Register() {
-// 	return (
-// 		<div className="register">
-// 			<Button
-// 				type="submit"
-// 			>Register</Button>
-// 		</div>
-// 	)
-// }

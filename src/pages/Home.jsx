@@ -46,12 +46,8 @@ function IndustrySearchBar(props) {
                 value={innerSearch}
                 onChange={(event) => {
                     setInnerSearch(event.target.value);
-                    
                 }}
-                
             />
-            
-            
             <button
                 type="submit"
                 id="industry-search-button"
@@ -114,7 +110,6 @@ function useStocks(searchTerm) {
     return { stocks };
 }
 
-
 function getStocks(searchTerm) {
     
     const url = `http://131.181.190.87:3000/stocks/symbols`;
@@ -155,7 +150,6 @@ function getStocks(searchTerm) {
                              }
                          ];
                         })
-                
         );
     }
     // All stocks

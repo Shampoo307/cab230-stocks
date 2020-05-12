@@ -182,11 +182,12 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
   padding-top: 20px;
   background: #1E2432;
   text-align: center;
-  height: 70vh;
+  /*height: 7?vh;*/
   /*width: 70%;*/
   color: #fff;
   margin: 0;
 }
+
 
 .stock-details-header {
   text-align: start;

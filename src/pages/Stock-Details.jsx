@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {AgGridReact} from "ag-grid-react";
 import { Input, Label } from 'reactstrap';
 import {Link} from "react-router-dom";
+import {LineChart, Line, CartesianGrid, XAxis, YAxis, Legend} from "recharts";
 
 export default function StockDetails(props) {
 	if (props.location.stockProps === undefined) {
@@ -255,12 +256,25 @@ function StockContainerAuthed({symbol}) {
 				</div>
 				<div
 					className="ag-theme-balham"
-					style={{height: "500px", width: "682px"}}>
+					style={{height: "500px", width: "750px"}}>
 					<AgGridReact
 						id="auth-stock-table"
 						columnDefs={stockColumns}
 						rowData={stock}
 						/>
+				</div>
+				<div className="chart">
+					<LineChart width={750} height={500} data={stock}>
+						<Line type="monotone" dataKey="open" stroke="#C608FF" strokeWidth={1.5} dot={null} name="Open" />
+						<Line type="monotone" dataKey="high" stroke="#7AFF6F" strokeWidth={1.5} dot={null} name="High" />
+						<Line type="monotone" dataKey="low" stroke="#FF5F5A" strokeWidth={1.5} dot={null} name="Low" />
+						<Line type="monotone" dataKey="close" stroke="#36CFFF" strokeWidth={1.5} dot={null} name="Close" />
+						
+						<XAxis dataKey="timestamp" domain={['auto', 'auto']} />
+						<YAxis domain={['dataMin', 'dataMax']}/>
+						
+						<Legend />
+					</LineChart>
 				</div>
 			</div>
 		</div>

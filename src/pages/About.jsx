@@ -12,16 +12,20 @@ export default function About() {
             </p>
             <p id="user-info">
                 The user can view a cursory list of all stocks available from the API on the homepage;
-                their Name, Symbol, and Industry. The user can also filter this list by Industry based
-                on their input.
+                their Name, Symbol, and Industry. The user can also filter this list by Industry or
+                stock symbol based on their input.
                 <br/>
-                The user can click on any of the stocks to view a page detailing some information on it,
-                namely it's most recent Price, Open, High, Low, and Close.
                 <br/>
-                To be able to see more detailed information about a particular stock, the user can register,
-                and create an account. Once registered or logged in, the user can on viewing a stock's
-                information, then see more about it's pricing history and fluctuations, accompanied by a
-                graph to aid visual understanding.
+                The user can select a stock, and click 'View Stock' to view a page detailing some
+                more specific stock information, namely its most recent Open, High, Low, Close, and Volume.
+                <br/>
+                <br/>
+                To be able to see more detailed information about a particular stock, the user can register
+                and create an account, or log in. Once registered and logged in, the user can again select
+                a stock and be taken to a page with more information on it. Now however, there is a full table
+                with data from the entire date range available, able to be narrowed down by use of the two date
+                pickers. Below the table resides a graph charting out the information displayed in the table
+                based on the dates selected.
             </p>
         </div>
     )

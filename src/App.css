@@ -247,6 +247,10 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
   -webkit-appearance: none;
 }
 
+.chart {
+  padding-top: 40px;
+}
+
 
 
 .user-buttons-stock {
@@ -260,7 +264,7 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
   margin: 10px;
   /*padding: 0;*/
   border: 0;
-  color: black;
+  color: #000000;
   background: #abc0d5;
   /*background: #fff;*/
   padding: 10px;

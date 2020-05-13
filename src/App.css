@@ -222,11 +222,36 @@ nav ul li a:hover, .register-button a:hover, #view-stock-button:hover {
   font-size: 1.5em;
 }
 
+.date-pickers {
+  display: flex;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.date-pickers label {
+  font-size: 1.2em;
+}
+.fromDateClass {
+  padding-right: 20px;
+}
+.toDateClass {
+  padding-left: 100px;
+  padding-right: 20px;
+}
+#fromDate, #toDate {
+  width: 180px;
+  justify-content: start;
+}
+
+::-webkit-clear-button {
+  display: none;
+  -webkit-appearance: none;
+}
+
+
+
 .user-buttons-stock {
   text-align: center;
   padding-top: 60px;
-
-
 }
 #login-from-stock, #register-from-stock {
   display: inline-block;

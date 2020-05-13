@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {AgGridReact} from "ag-grid-react";
+import { Input, Label, Button } from 'reactstrap';
 import {Link} from "react-router-dom";
 
 export default function StockDetails(props) {
@@ -51,19 +52,21 @@ function StockDetailsHeader(props) {
 	const [stockInfo, setStockInfo] = useState({});
 	const url = `http://131.181.190.87:3000/stocks/${props.symbol}`;
 	
-	fetch(url)
-		.then((res) => res.json())
-		.then((stock) => {
-				return {
-					name: stock.name,
-					symbol: stock.symbol,
-					industry: stock.industry
-				};
-			}
-		)
-		.then((stock) => {
-			setStockInfo(stock);
-		});
+	useEffect( () => {
+		fetch(url)
+			.then((res) => res.json())
+			.then((stock) => {
+					return {
+						name: stock.name,
+						symbol: stock.symbol,
+						industry: stock.industry
+					};
+				}
+			)
+			.then((stock) => {
+				setStockInfo(stock);
+			});
+	})
 		
 	return (
 		<div className="stock-details-header">
@@ -121,7 +124,7 @@ function StockContainerUnAuthed({symbol}) {
 	}, [symbol]);
 	const stockRows = [
 		{
-			timestamp: stockInfo.timestamp.slice(0, 9),
+			timestamp: stockInfo.timestamp.slice(0, 10),
 			open: stockInfo.open,
 			high: stockInfo.high,
 			low: stockInfo.low,
@@ -145,7 +148,7 @@ function StockContainerUnAuthed({symbol}) {
 				</div>
 			</div>
 			<div className="user-buttons-stock"
-				style={{"padding-bottom": "200px"}}>
+				style={{"paddingBottom": "200px"}}>
 				<p>
 				Log in or Register to view both tabled and charted stock information
 					between a date range!
@@ -165,58 +168,153 @@ function StockContainerUnAuthed({symbol}) {
 	)
 }
 
-function StockContainerAuthed({symbol}) {
-	const stockColumns = [
-		{ headerName: "Timestamp", field: "timestamp", sortable: false, width: 140 },
-		{ headerName: "Open", field: "open", sortable: false, width: 100 },
-		{ headerName: "High", field: "high", sortable: false, width: 100 },
-		{ headerName: "Low", field: "low", sortable: false, width: 100 },
-		{ headerName: "Close", field: "close", sortable: false, width: 100 },
-		{ headerName: "Volumes", field: "volumes", sortable: false, width: 140 }
-	]
+
+
+// function updateTable(date, symbol, setStockInfo) {
+// 	const fromDateDate = `?from=${date.fromDate}T00%3A00%3A00.000Z`;
+// 	const toDateDate = `&to=${date.toDate}T00%3A00%3A00.000Z`;
+// 	const url = `http://131.181.190.87:3000/stocks/authed/${symbol}${fromDateDate}${toDateDate}`;
+// 	const token = localStorage.getItem("token");
+// 	const headers = {
+// 		accept: "application/json",
+// 		"Content-Type": "application/json",
+// 		Authorization: `Bearer ${token}`
+// 	}
+// 	fetch(url, { headers })
+// 		.then((res) => res.json())
+// 		.then((stock) =>
+// 			stock.map((stock) => {
+// 				return {
+// 					timestamp: stock.timestamp.slice(0, 10),
+// 					open: stock.open,
+// 					high: stock.high,
+// 					low: stock.low,
+// 					close: stock.close,
+// 					volumes: stock.volumes
+// 				};
+// 			}))
+// 		.then((stock) => {
+// 			setStockInfo(stock);
+// 		})
+// }
+
+function useStock(date, symbol) {
+	const [stock, setStock] = useState([]);
 	
-	const [stockInfo, setStockInfo] = useState([]);
-	console.log("set stockInfo", stockInfo);
-	const specifierAll = `?=from=2019-11-06T00%3A00%3A00.000Z&to=2020-03-24T00%3A00%3A00.000Z`
-	const url = `http://131.181.190.87:3000/stocks/authed/${symbol}${specifierAll}`;
+	
+	useMemo( () => {
+		getStock(date, symbol)
+			.then((stock) => {
+				setStock(stock);
+			})
+		
+	}, [date]);
+	
+	
+	return { stock }
+}
+
+function getStock(date, symbol) {
+	const fromDateDate = `?from=${date.fromDate}T00%3A00%3A00.000Z`;
+	const toDateDate = `&to=${date.toDate}T00%3A00%3A00.000Z`;
+	const url = `http://131.181.190.87:3000/stocks/authed/${symbol}${fromDateDate}${toDateDate}`;
 	const token = localStorage.getItem("token");
 	const headers = {
 		accept: "application/json",
 		"Content-Type": "application/json",
 		Authorization: `Bearer ${token}`
 	}
-	
-	useEffect( () => {
+	return (
 		fetch(url, { headers })
 			.then((res) => res.json())
 			.then((stock) =>
 				stock.map((stock) => {
 					return {
-						timestamp: stock.timestamp,
+						timestamp: stock.timestamp.slice(0, 10),
 						open: stock.open,
 						high: stock.high,
 						low: stock.low,
 						close: stock.close,
 						volumes: stock.volumes
 					};
-			}))
-			.then((stock) => {
-				setStockInfo(stock);
-			}
-			)
-		
-	}, [symbol]);
+				}))
+	)
+}
+
+function StockContainerAuthed({symbol}) {
+	const stockColumns = [
+		{ headerName: "Timestamp", field: "timestamp", sortable: true, width: 140 },
+		{ headerName: "Open", field: "open", sortable: true, width: 100 },
+		{ headerName: "High", field: "high", sortable: true, width: 100 },
+		{ headerName: "Low", field: "low", sortable: true, width: 100 },
+		{ headerName: "Close", field: "close", sortable: true, width: 100 },
+		{ headerName: "Volumes", field: "volumes", sortable: true, width: 140 }
+	]
+	const [date, setDate] = useState({fromDate: '2019-11-06', toDate: '2020-03-24'})
+	// const [fromDate, setFromDate] = useState('2019-11-06');
+	// const [toDate, setToDate] = useState('2020-03-24');
+	// const [dateChanged, setDateChanged] = useState(false);
+	
+	// const [stockInfo, setStockInfo] = useState();
+	
+	// console.log("set stockInfo", stockInfo);
+	// const specifierAll = `?=from=2019-11-06T00%3A00%3A00.000Z&to=2020-03-24T00%3A00%3A00.000Z`
+	// const url = `http://131.181.190.87:3000/stocks/authed/${symbol}${specifierAll}`;
+	
+	const { stock } = useStock(date, symbol);
+	// setStockInfo(stock);
+	
 	
 	return (
 		<div>
 			<div className="auth-stock-table">
+				<div className="date-pickers">
+					<Label
+						id="fromDateLabel"
+						for="fromDate"
+						className="fromDateClass"
+						>From: </Label>
+					<Input
+						type="date"
+						id="fromDate"
+						name="fromDate"
+						className="fromDateClass"
+						min="2019-11-06"
+						max="2020-03-24"
+						value={date.fromDate}
+						onChange={(event) => {
+							setDate({fromDate: event.target.value, toDate: date.toDate});
+							// updateTable(date, symbol, setStockInfo)
+							// setStockInfo(updateDate(date, symbol));
+						}}					/>
+					<Label
+						id="toDateLabel"
+						for="toDate"
+						className="toDateClass"
+					>To: </Label>
+					<Input
+						type="date"
+						id="toDate"
+						name="toDate"
+						className="toDateClass"
+						min="2019-11-06"
+						max="2020-03-24"
+						value={date.toDate}
+						onChange={(event) => {
+							setDate({fromDate: date.fromDate, toDate: event.target.value});
+							// updateTable(date, symbol, setStockInfo)
+							// setStockInfo(updateDate(date, symbol));
+							// console.log(event.target.value);
+						}}
+					/>
+				</div>
 				<div
 					className="ag-theme-balham"
 					style={{height: "500px", width: "682px"}}>
 					<AgGridReact
 						id="auth-stock-table"
 						columnDefs={stockColumns}
-						rowData={stockInfo}
+						rowData={stock}
 						/>
 				</div>
 			</div>

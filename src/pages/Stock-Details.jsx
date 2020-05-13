@@ -1,10 +1,9 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {AgGridReact} from "ag-grid-react";
-import { Input, Label, Button } from 'reactstrap';
+import { Input, Label } from 'reactstrap';
 import {Link} from "react-router-dom";
 
 export default function StockDetails(props) {
-	
 	if (props.location.stockProps === undefined) {
 		return (
 			<div className="symbol-undefined">
@@ -34,7 +33,7 @@ export default function StockDetails(props) {
 	}
 	
 	let stockSymbol = props.location.stockProps.symbol;
-	console.log("stock symbol", stockSymbol);
+	
 	return (
 		<div className="stock-details-container">
 			
@@ -96,19 +95,13 @@ function StockContainerUnAuthed({symbol}) {
 	}
 	
 	const [stockInfo, setStockInfo] = useState(fields);
-	console.log("set stockInfo", stockInfo);
 	const url = `http://131.181.190.87:3000/stocks/${symbol}`;
-	
-		console.log("just before getStock");
 	
 	useEffect( () => {
 		fetch(url)
 			.then((res) => res.json())
 			.then((stock) => {
 				return {
-					// name: stock.name,
-					// symbol: stock.symbol,
-					// industry: stock.industry,
 					timestamp: stock.timestamp,
 					open: stock.open,
 					high: stock.high,
@@ -168,39 +161,8 @@ function StockContainerUnAuthed({symbol}) {
 	)
 }
 
-
-
-// function updateTable(date, symbol, setStockInfo) {
-// 	const fromDateDate = `?from=${date.fromDate}T00%3A00%3A00.000Z`;
-// 	const toDateDate = `&to=${date.toDate}T00%3A00%3A00.000Z`;
-// 	const url = `http://131.181.190.87:3000/stocks/authed/${symbol}${fromDateDate}${toDateDate}`;
-// 	const token = localStorage.getItem("token");
-// 	const headers = {
-// 		accept: "application/json",
-// 		"Content-Type": "application/json",
-// 		Authorization: `Bearer ${token}`
-// 	}
-// 	fetch(url, { headers })
-// 		.then((res) => res.json())
-// 		.then((stock) =>
-// 			stock.map((stock) => {
-// 				return {
-// 					timestamp: stock.timestamp.slice(0, 10),
-// 					open: stock.open,
-// 					high: stock.high,
-// 					low: stock.low,
-// 					close: stock.close,
-// 					volumes: stock.volumes
-// 				};
-// 			}))
-// 		.then((stock) => {
-// 			setStockInfo(stock);
-// 		})
-// }
-
 function useStock(date, symbol) {
 	const [stock, setStock] = useState([]);
-	
 	
 	useMemo( () => {
 		getStock(date, symbol)
@@ -209,7 +171,6 @@ function useStock(date, symbol) {
 			})
 		
 	}, [date]);
-	
 	
 	return { stock }
 }
@@ -251,19 +212,7 @@ function StockContainerAuthed({symbol}) {
 		{ headerName: "Volumes", field: "volumes", sortable: true, width: 140 }
 	]
 	const [date, setDate] = useState({fromDate: '2019-11-06', toDate: '2020-03-24'})
-	// const [fromDate, setFromDate] = useState('2019-11-06');
-	// const [toDate, setToDate] = useState('2020-03-24');
-	// const [dateChanged, setDateChanged] = useState(false);
-	
-	// const [stockInfo, setStockInfo] = useState();
-	
-	// console.log("set stockInfo", stockInfo);
-	// const specifierAll = `?=from=2019-11-06T00%3A00%3A00.000Z&to=2020-03-24T00%3A00%3A00.000Z`
-	// const url = `http://131.181.190.87:3000/stocks/authed/${symbol}${specifierAll}`;
-	
 	const { stock } = useStock(date, symbol);
-	// setStockInfo(stock);
-	
 	
 	return (
 		<div>
@@ -284,9 +233,8 @@ function StockContainerAuthed({symbol}) {
 						value={date.fromDate}
 						onChange={(event) => {
 							setDate({fromDate: event.target.value, toDate: date.toDate});
-							// updateTable(date, symbol, setStockInfo)
-							// setStockInfo(updateDate(date, symbol));
-						}}					/>
+						}}
+					/>
 					<Label
 						id="toDateLabel"
 						for="toDate"
@@ -302,9 +250,6 @@ function StockContainerAuthed({symbol}) {
 						value={date.toDate}
 						onChange={(event) => {
 							setDate({fromDate: date.fromDate, toDate: event.target.value});
-							// updateTable(date, symbol, setStockInfo)
-							// setStockInfo(updateDate(date, symbol));
-							// console.log(event.target.value);
 						}}
 					/>
 				</div>

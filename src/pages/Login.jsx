@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
-import {isElement} from "react-dom/test-utils";
-import Register from "./Register";
 
 export default function Login(props) {
     const [userDetails, setUserDetails] = useState({});

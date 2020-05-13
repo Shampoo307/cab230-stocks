@@ -11,7 +11,6 @@ import stocksImage from './stocksImage.jpg';
 export default function Header() {
 	return (
 		<header className="header">
-			{/* icon */}
 			<div id="icon">
 				<img src={stocksImage} alt="Generic Stock Market"/>
 			</div>

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 
-
 export default function Register() {
 	const [userDetails, setUserDetails] = useState({});
 	const [message, setMessage] = useState('');

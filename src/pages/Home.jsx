@@ -1,9 +1,7 @@
 import  React, { useState, useEffect } from 'react';
 import {AgGridReact} from "ag-grid-react";
-import { Form, FormGroup, Label, Input } from 'reactstrap';
+import { Form, Input } from 'reactstrap';
 import {Link} from "react-router-dom";
-
-
 
 function validateInput(input) {
     const industries = [
@@ -39,7 +37,6 @@ function IndustrySearchBar(props) {
     return (
         <Form className="industryInput">
             <input
-                // aria-labelledby="search-button"
                 name="industry"
                 id="industrySearch"
                 placeholder="Industry or Symbol"
@@ -74,7 +71,6 @@ function IndustrySearchBar(props) {
                 name="select"
                 id="industry-select"
                 onChange={ (event) => {
-                    
                     props.onSubmit(event.target.value);
                 }}
             >
@@ -93,7 +89,6 @@ function IndustrySearchBar(props) {
             </Input>
         </Form>
     );
-    
 }
 
 function useStocks(searchTerm) {
@@ -189,7 +184,6 @@ const StockGrid = (props) => {
             <div
                 className="ag-theme-balham"
                 style={{height: "500px", width: "620px"}}>
-                
                 <AgGridReact
                     id="stock-table"
                     columnDefs={stocksColumns}
